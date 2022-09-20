@@ -1,63 +1,44 @@
+
 const express = require('express');
 const router = express.Router();
-const post = require('../models/post');
-const mongoose = require('mongoose');
+const post = require('../models/User');
 
-//post request with  post model
 
-//post request with  {
-  //  "title" : "anan",
- //   "content" : "baban"
-//} model
+router.post('/register', (req, res) => {
 
-router.post('/test', (req, res) => {
-    
     const newPost = new post({
-        title: req.body.title,
-        content: req.body.content
+        username: JSON.parse(req.body).username,
+        password: JSON.parse(req.body).password,
         
     });
-    console.log(newPost)
+    console.log(newPost);
     newPost.save().then(post => {
-        res.json(post);
+        res.send("kayıt başarılı brom");
     }).catch(err => {
+        res.status(404).send(`error ${err}`);
         console.log(err);
     });
 });
 
+//update post image with id 
+router.post('/image/:id', (req, res) => {
+    post.findById(req.params.id).then(post => {
+        if (post) {
 
-// router.post('/test', async (req, res) => {
-//     post.create(req.body, (error, post) => {
-//        console.log(req.body);
-//        if (error) {
-//            console.log(error);
-//        }
-//     }
-//     );
-// });
-
-
-
-
-
-//post request
-// router.post('/test', async (req, res) => {
-//     const post = new post({
-//         title: req.body.title,
-//         content: req.body.content
-//     });
-//     try {
-//         const newPost = await post.save();
-//         res.redirect('/posts');
-//     } catch (err) {
-//         res.render('posts/new', {
-//             post: post,
-//             errorMessage: 'Error creating post'
-//         });
-
-//     }
-// });
-
+            post.image = req.files.image.data.toString('base64');
+            console.log(`${post.image}`);
+            post.save().then(post => {
+                res.send("profil foton yüklendi brom");
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            res.sendStatus(404);
+        }
+    }).catch(err => {
+        console.log(err);
+    });
+});
 
 
 module.exports = router;

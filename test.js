@@ -22,7 +22,7 @@ post.findByIdAndUpdate('63292d71537b8eac87284a88', {
 
 // post.create({
 //     title: 'al kanka',
-//     content: 'Test Content'
+//     password: 'Test password'
 // }, (error, post) => {
 //     console.log(error, post)
 // })
