@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const post = require('../models/post');
 
 // Index Route
 router.get('/', function (req, res) {
@@ -15,7 +16,11 @@ router.get('/contact', function (req, res) {
 });
 
 router.get('/blog', function (req, res) {
-    res.render('site2/blog');
+    post.find({}).then(posts => {
+        console.log(posts);
+        res.send(posts);
+    }
+    );
 });
 
 router.get('/login', function (req, res) {
